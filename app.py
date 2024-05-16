@@ -3,12 +3,13 @@ from flask import Flask, render_template, Response, request, jsonify
 from PIL import Image
 import cv2
 
-app = Flask(__name__)
-camera = cv2.VideoCapture(0)
-camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+app = Flask(__name__) # initialize flask app
+
+camera = cv2.VideoCapture(0) # set camera that going to use
+camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1280) # set camera resolution
 camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
-colors = {}
+colors = {} # store colors value in object 
 
 @app.route('/')
 def index():
