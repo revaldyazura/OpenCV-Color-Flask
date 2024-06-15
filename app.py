@@ -19,6 +19,7 @@ def index():
 @app.route('/add_color', methods=['POST'])
 def add_color():
     data = request.json
+    # color_name = data['colorName']
     bgr_values = tuple(data['bgrValues'])
     colors[bgr_values] = bgr_values
     return jsonify({'message': 'Color added successfully'})
