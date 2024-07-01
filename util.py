@@ -1,22 +1,35 @@
 import numpy as np
 import cv2
 
-
-def get_limits(color):
+def get_limits(color, hue_offset=10, saturation_offset=40, value_offset=50):
     c = np.uint8([[color]])  # BGR values
     hsvC = cv2.cvtColor(c, cv2.COLOR_BGR2HSV)
+    hue = hsvC[0][0][0]
+    saturation = hsvC[0][0][1]
+    value = hsvC[0][0][2]
 
-    hue = hsvC[0][0][0]  # Get the hue value
+    # Handle hue wrap-around by taking care of negative values and values above 180
+    lower_hue = max(0, hue - hue_offset)
+    upper_hue = min(180, hue + hue_offset)
 
-    # Handle red hue wrap-around
-    if hue >= 165:  # Upper limit for divided red hue
-        lowerLimit = np.array([hue - 10, 100, 100], dtype=np.uint8)
-        upperLimit = np.array([180, 255, 255], dtype=np.uint8)
-    elif hue <= 15:  # Lower limit for divided red hue
-        lowerLimit = np.array([0, 100, 100], dtype=np.uint8)
-        upperLimit = np.array([hue + 10, 255, 255], dtype=np.uint8)
-    else:
-        lowerLimit = np.array([hue - 10, 100, 100], dtype=np.uint8)
-        upperLimit = np.array([hue + 10, 255, 255], dtype=np.uint8)
+    # Define limits for saturation and value with clamping between 0 and 255
+    lower_saturation = max(0, saturation - saturation_offset)
+    upper_saturation = min(255, saturation + saturation_offset)
+    lower_value = max(0, value - value_offset)
+    upper_value = min(255, value + value_offset)
 
-    return lowerLimit, upperLimit
+    # Define the lower and upper limits
+    lower_limit = np.array([lower_hue, lower_saturation, lower_value], dtype=np.uint8)
+    upper_limit = np.array([upper_hue, upper_saturation, upper_value], dtype=np.uint8)
+
+    return lower_limit, upper_limit
+
+def get_black_limits():
+    lower_black = np.array([0, 0, 0], dtype=np.uint8)
+    upper_black = np.array([180, 255, 50], dtype=np.uint8)
+    return lower_black, upper_black
+
+def get_white_limits():
+    lower_white = np.array([0, 0, 200], dtype=np.uint8)
+    upper_white = np.array([180, 30, 255], dtype=np.uint8)
+    return lower_white, upper_white
