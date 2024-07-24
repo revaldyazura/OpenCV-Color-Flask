@@ -1,3 +1,4 @@
+Flask
+OpenCV
+flask-socketio
 - pip install venv
-- install flask
-- install OpenCV
