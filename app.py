@@ -39,7 +39,6 @@ def reset_colors():
 def generate_frames():
     while True:
         if not camera_active:
-            # Gambar pengganti ketika kamera tidak aktif
             replacement_image = cv2.imread('https://firebasestorage.googleapis.com/v0/b/obras-7eb0b.appspot.com/o/there-is-no-connected-camera.jpg?alt=media&token=e512eeb6-d19d-4826-abca-bc54169aa2ee')
             ret, buffer = cv2.imencode('.jpg', replacement_image)
             frame = buffer.tobytes()

@@ -2,23 +2,23 @@ import numpy as np
 import cv2
 
 def get_limits(color, hue_offset=10, saturation_offset=40, value_offset=50):
-    c = np.uint8([[color]])  # BGR values
+    c = np.uint8([[color]]) 
     hsvC = cv2.cvtColor(c, cv2.COLOR_BGR2HSV)
     hue = hsvC[0][0][0]
     saturation = hsvC[0][0][1]
     value = hsvC[0][0][2]
 
-    # Handle hue wrap-around by taking care of negative values and values above 180
+    
     lower_hue = max(0, hue - hue_offset)
     upper_hue = min(180, hue + hue_offset)
 
-    # Define limits for saturation and value with clamping between 0 and 255
+    
     lower_saturation = max(0, saturation - saturation_offset)
     upper_saturation = min(255, saturation + saturation_offset)
     lower_value = max(0, value - value_offset)
     upper_value = min(255, value + value_offset)
 
-    # Define the lower and upper limits
+    
     lower_limit = np.array([lower_hue, lower_saturation, lower_value], dtype=np.uint8)
     upper_limit = np.array([upper_hue, upper_saturation, upper_value], dtype=np.uint8)
 
